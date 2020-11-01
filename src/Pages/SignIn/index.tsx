@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useCallback, useRef } from 'react';
@@ -17,7 +18,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { useAuth } from '../../hooks/Auth';
+import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -43,7 +44,9 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
+
+  console.log(user);
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
