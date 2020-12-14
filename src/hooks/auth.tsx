@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/prop-types */
@@ -11,6 +12,13 @@ import React, {
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface SignInCredentials {
   email: string;
   password: string;
@@ -18,11 +26,11 @@ interface SignInCredentials {
 
 interface AuthState {
   token: string;
-  user: object;
+  user: User;
 }
 
 interface AuthContextData {
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   loading: boolean;
