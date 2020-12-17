@@ -1,5 +1,7 @@
+import { FlatList } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import styled from 'styled-components/native';
+import { Provider } from '../Dashboard';
 
 export const Container = styled.View`
   flex: 1;
@@ -30,3 +32,25 @@ export const UserAvatar = styled.Image`
   border-radius: 28px;
   margin-left: auto;
 `;
+
+export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
+  padding: 32px 24px;
+`;
+
+export const ProvidersListContainer = styled.View`
+  height: 112px;
+`;
+
+export const ProviderContainer = styled.View`
+  background: #3e3b37;
+  flex-direction: row;
+  padding: 8px 12px;
+  align-items: center;
+  margin-right: 16px;
+
+  border-radius: 10px;
+`;
+
+export const ProviderAvatar = styled.Image``;
+
+export const ProviderName = styled.Text``;
