@@ -31,9 +31,12 @@ const CreateAppointment: React.FC = () => {
   const route = useRoute();
   const { user } = useAuth();
   const { goBack } = useNavigation();
-  const { providerId } = route.params as RouteParams;
+  const routeParams = route.params as RouteParams;
 
   const [providers, setProviders] = useState<Provider[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState(
+    routeParams.providerId,
+  );
 
   const navigateBack = useCallback(() => {
     goBack();
@@ -43,6 +46,10 @@ const CreateAppointment: React.FC = () => {
     api.get('providers').then(response => {
       setProviders(response.data);
     });
+  }, []);
+
+  const handleSelectProvider = useCallback((providerId: string) => {
+    setSelectedProvider(providerId);
   }, []);
 
   return (
@@ -64,9 +71,14 @@ const CreateAppointment: React.FC = () => {
           data={providers}
           keyExtractor={provider => provider.id}
           renderItem={({ item: provider }) => (
-            <ProviderContainer>
+            <ProviderContainer
+              onPress={() => handleSelectProvider(provider.id)}
+              selected={provider.id === selectedProvider}
+            >
               <ProviderAvatar source={{ uri: provider.avatar_url }} />
-              <ProviderName>{provider.name}</ProviderName>
+              <ProviderName selected={provider.id === selectedProvider}>
+                {provider.name}
+              </ProviderName>
             </ProviderContainer>
           )}
         />
