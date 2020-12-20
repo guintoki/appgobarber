@@ -35,6 +35,7 @@
       "prettier/prettier": "error",
       "no-unused-expressions": "off",
       "@typescript-eslint/camalcase": "off",
+      "import/no-duplicates": "off",
       "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
       "import/prefer-default-export": "off",
       "import/extensions": [
