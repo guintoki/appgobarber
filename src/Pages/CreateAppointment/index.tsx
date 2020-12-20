@@ -168,11 +168,11 @@ const CreateAppointment: React.FC = () => {
         )}
       </Calendar>
 
-      {morningAvailability.map(({ hourFormatted, available }) => (
+      {morningAvailability.map(({ hourFormatted }) => (
         <Title key={hourFormatted}>{hourFormatted}</Title>
       ))}
 
-      {affternoonAvailability.map(({ hourFormatted, available }) => (
+      {affternoonAvailability.map(({ hourFormatted }) => (
         <Title key={hourFormatted}>{hourFormatted}</Title>
       ))}
     </Container>
