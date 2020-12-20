@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
 import React, { useCallback, useRef } from 'react';
 import {
@@ -33,10 +34,12 @@ interface ProfileFormData {
   name: string;
   email: string;
   password: string;
+  old_password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
 
@@ -58,14 +61,48 @@ const Profile: React.FC = () => {
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
-          password: Yup.string().min(6, 'No mínimo 6 digitos'),
+          password: Yup.string().when('old_password', {
+            is: val => !!val.lenght,
+            then: Yup.string().required('Campo obrigatório'),
+            otherwise: Yup.string(),
+          }),
+          old_password: Yup.string(),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: val => !!val.lenght,
+              then: Yup.string().required('Campo obrigatório'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password')], 'Confirmação incorreta'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        const {
+          name,
+          email,
+          password,
+          old_password,
+          password_confirmation,
+        } = data;
+
+        const formData = {
+          name,
+          email,
+          ...(old_password
+            ? {
+                old_password,
+                password,
+                password_confirmation,
+              }
+            : {}),
+        };
+
+        const response = await api.put('/profile', formData);
+
+        updateUser(response.data);
 
         Alert.alert(
           'Cadastro realizado com sucesso',
@@ -85,8 +122,8 @@ const Profile: React.FC = () => {
         console.log(err);
 
         Alert.alert(
-          'Erro no cadastro',
-          'Ocorreu um erro no cadastro, tente novamente',
+          'Erro na atualização do perfil',
+          'Ocorreu um erro na atualização, tente novamente',
         );
       }
     },
@@ -122,6 +159,7 @@ const Profile: React.FC = () => {
             </View>
 
             <Form
+              initialData={user}
               style={{ width: '100%' }}
               ref={formRef}
               onSubmit={handleProfile}
